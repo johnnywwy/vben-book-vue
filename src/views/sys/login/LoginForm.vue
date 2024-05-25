@@ -129,10 +129,6 @@
         title: t('sys.api.errorTip'),
         content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
         getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-        closable: true,
-        onOk: () => {
-          console.log('确认')
-        },
       })
     } finally {
       loading.value = false
