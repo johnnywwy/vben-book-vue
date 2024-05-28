@@ -1,13 +1,15 @@
-import { LAYOUT } from '/@/router/constant'
+import { asyncRoutes } from './routes'
+// import { LAYOUT } from '/@/router/constant'
 
-export const ROUTE_MAP = {
-  Dashboard: LAYOUT,
-  Analysis: () => import('/@/views/dashboard/analysis/index.vue'),
-  Workbench: () => import('/@/views/dashboard/workbench/index.vue'),
-  PermissionFrontDemo: () => import('/@/views/dashboard/workbench/index.vue'),
-  FrontPageAuth: () => import('/@/views/dashboard/workbench/index.vue'),
-  FrontBtnAuth: () => import('/@/views/dashboard/workbench/index.vue'),
-  FrontAuthPageA: () => import('/@/views/dashboard/workbench/index.vue'),
-  FrontAuthPageB: () => import('/@/views/dashboard/workbench/index.vue'),
-  NotFound: () => import('/@/views/sys/exception/Exception.vue'),
+const newRoutes = {}
+function generateRouteMap(routes) {
+  return routes.map((item) => {
+    if (item.children && item.children.length > 0) {
+      generateRouteMap(item.children)
+    }
+    newRoutes[item.name] = item.component
+  })
 }
+
+generateRouteMap(asyncRoutes)
+export const ROUTE_MAP = newRoutes
