@@ -23,6 +23,7 @@ import { getPermCode } from '/@/api/sys/user'
 
 import { useMessage } from '/@/hooks/web/useMessage'
 import { PageEnum } from '/@/enums/pageEnum'
+import { ROUTE_MAP } from '/@/router/route-map'
 
 interface PermissionState {
   // Permission code list
@@ -168,11 +169,31 @@ export const usePermissionStore = defineStore({
         return
       }
 
+      const wrapperRouteComponent = (routes) => {
+        return routes.map((route) => {
+          if (route.children && route.children.length > 0) {
+            route.children = wrapperRouteComponent(route.children)
+          }
+          route.component = ROUTE_MAP[route.name] || ROUTE_MAP.NotFound
+
+          return route
+        })
+      }
+
+      let backendRouteList = asyncRoutes
+
+      try {
+        backendRouteList = (await getMenuList()) as AppRouteRecordRaw[]
+        backendRouteList = wrapperRouteComponent(backendRouteList)
+      } catch (e) {}
+
+      console.log('backendRouteList', backendRouteList)
+
       switch (permissionMode) {
         // 角色权限
         case PermissionModeEnum.ROLE:
           // 对非一级路由进行过滤
-          routes = filter(asyncRoutes, routeFilter)
+          routes = filter(backendRouteList, routeFilter)
           // 对一级路由根据角色权限过滤
           routes = routes.filter(routeFilter)
           // Convert multi-level routing to level 2 routing
@@ -183,7 +204,7 @@ export const usePermissionStore = defineStore({
         // 路由映射， 默认进入该case
         case PermissionModeEnum.ROUTE_MAPPING:
           // 对非一级路由进行过滤
-          routes = filter(asyncRoutes, routeFilter)
+          routes = filter(backendRouteList, routeFilter)
           // 对一级路由再次根据角色权限过滤
           routes = routes.filter(routeFilter)
           // 将路由转换成菜单
