@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>菜单管理 </h1>
     <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增菜单 </a-button>
