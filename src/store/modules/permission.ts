@@ -24,6 +24,7 @@ import { getPermCode } from '/@/api/sys/user'
 import { useMessage } from '/@/hooks/web/useMessage'
 import { PageEnum } from '/@/enums/pageEnum'
 import { ROUTE_MAP } from '/@/router/route-map'
+import { convertMenuTree } from '/@/utils/tree'
 
 interface PermissionState {
   // Permission code list
@@ -171,6 +172,11 @@ export const usePermissionStore = defineStore({
 
       const wrapperRouteComponent = (routes) => {
         return routes.map((route) => {
+          if (route?.meta) {
+            console.log('有没有meta', route.meta)
+            // route.meta = []
+          }
+
           if (route.children && route.children.length > 0) {
             route.children = wrapperRouteComponent(route.children)
           }
@@ -183,7 +189,8 @@ export const usePermissionStore = defineStore({
       let backendRouteList = asyncRoutes
 
       try {
-        backendRouteList = (await getMenuList()) as AppRouteRecordRaw[]
+        const res = await getMenuList()
+        backendRouteList = convertMenuTree(res)
         backendRouteList = wrapperRouteComponent(backendRouteList)
       } catch (e) {}
 
