@@ -102,7 +102,7 @@
             const ret = checkAllChildrenMenuDisabled(values)
             if (ret) {
               try {
-                await updateMenu({ data: values })
+                await updateMenu(values)
                 createMessage.success('更新菜单成功')
               } catch (e) {
                 console.error(e)
@@ -112,7 +112,7 @@
             }
           } else {
             try {
-              await createMenu({ data: values })
+              await createMenu(values)
               createMessage.success('新建菜单成功')
             } catch (e) {
               console.error(e)

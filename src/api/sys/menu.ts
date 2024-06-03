@@ -25,5 +25,5 @@ export const createMenu = (data) => {
 }
 
 export const updateMenu = (data) => {
-  return defHttp.put({ url: Api.CreateMenu, data })
+  return defHttp.put({ url: Api.UpdateMenu, data })
 }
