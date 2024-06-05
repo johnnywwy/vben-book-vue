@@ -70,8 +70,8 @@
   import { BasicForm } from '/@/components/Form/index'
   import { actions, searchList, schemas, doDeleteBook } from './data'
   import { PageWrapper } from '/@/components/Page'
-  // import { hasAuth } from '@/utils/auth'
-  // import { BOOK_SEARCH, BOOK_EDIT, BOOK_DELETE } from '/@/utils/auth/permission-key'
+  // import { hasAuth } from '/@/utils/auth'
+  import { BOOK_SEARCH, BOOK_EDIT, BOOK_DELETE } from '/@/utils/auth/permission-key'
 
   const list = ref()
   const title = ref()
@@ -79,6 +79,13 @@
   const total = ref(80)
   const current = ref(1)
   const pageSize = ref(20)
+
+  const hasAuth = (val) => {
+    if (val) {
+      return true
+    }
+    // return true
+  }
 
   const handleSearch = (e) => {
     if (!hasAuth(BOOK_SEARCH)) {

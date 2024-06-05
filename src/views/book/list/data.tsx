@@ -21,6 +21,7 @@ export const searchList = async (params = {}) => {
     p.author = author
   }
   const { data, count } = await getBookList(p)
+  console.log('resresresres', data)
   for (let i = 0; i < data.length; i++) {
     const item = data[i]
     result.push({
@@ -33,7 +34,7 @@ export const searchList = async (params = {}) => {
       fileName: item.fileName,
     })
   }
-  console.log(data, result)
+  console.log('图书哇塞', data, result)
   return { data: result, count }
 }
 
