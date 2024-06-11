@@ -78,7 +78,7 @@
   const author = ref()
   const total = ref(80)
   const current = ref(1)
-  const pageSize = ref(20)
+  const pageSize = ref(10)
 
   const hasAuth = (val) => {
     if (val) {

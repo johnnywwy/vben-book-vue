@@ -4,14 +4,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, toRefs, h } from 'vue';
-  import {
-    BasicTable,
-    useTable,
-    BasicColumn,
-    ActionItem,
-    EditRecordRow,
-  } from '/@/components/Table';
+  import { defineComponent, toRefs, h } from 'vue'
+  import { BasicTable, useTable, BasicColumn, ActionItem, EditRecordRow } from '/@/components/Table'
 
   const columns: BasicColumn[] = [
     {
@@ -31,7 +25,7 @@ import { defineComponent, toRefs, h } from 'vue';
       title: '链接',
       dataIndex: 'href',
       customRender: (data) => {
-        const text = data.text;
+        const text = data.text
         return {
           children: h(
             'a',
@@ -41,10 +35,10 @@ import { defineComponent, toRefs, h } from 'vue';
             },
             'Read',
           ),
-        };
+        }
       },
     },
-  ];
+  ]
 
   export default defineComponent({
     components: { BasicTable },
@@ -52,30 +46,30 @@ import { defineComponent, toRefs, h } from 'vue';
       data: Array,
     },
     setup(props) {
-      const { data } = toRefs(props);
+      const { data } = toRefs(props)
       const [registerTable, { getDataSource }] = useTable({
         columns: columns,
         showIndexColumn: false,
         dataSource: data,
         scroll: { y: '100%' },
         pagination: false,
-      });
+      })
 
       function handleEdit(record: EditRecordRow) {
-        record.onEdit?.(true);
+        record.onEdit?.(true)
       }
 
       function handleCancel(record: EditRecordRow) {
-        record.onEdit?.(false);
+        record.onEdit?.(false)
         if (record.isNew) {
-          const data = getDataSource();
-          const index = data.findIndex((item) => item.key === record.key);
-          data.splice(index, 1);
+          const data = getDataSource()
+          const index = data.findIndex((item) => item.key === record.key)
+          data.splice(index, 1)
         }
       }
 
       function handleSave(record: EditRecordRow) {
-        record.onEdit?.(false, true);
+        record.onEdit?.(false, true)
       }
 
       function createActions(record: EditRecordRow, column: BasicColumn): ActionItem[] {
@@ -88,7 +82,7 @@ import { defineComponent, toRefs, h } from 'vue';
             {
               label: '删除',
             },
-          ];
+          ]
         }
         return [
           {
@@ -102,7 +96,7 @@ import { defineComponent, toRefs, h } from 'vue';
               confirm: handleCancel.bind(null, record, column),
             },
           },
-        ];
+        ]
       }
 
       return {
@@ -110,7 +104,7 @@ import { defineComponent, toRefs, h } from 'vue';
         handleEdit,
         createActions,
         getDataSource,
-      };
+      }
     },
-  });
+  })
 </script>
