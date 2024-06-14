@@ -1,0 +1,11 @@
+version: '3.1'
+name: vben-book-vue
+services:
+  app:
+    build: .
+    volumes:
+      - ~/.ssh:/root/.ssh # 挂载本地的 .ssh 目录到容器中的 /root/.ssh
+      # - .:/app # 挂载当前目录到容器中的 /app
+    working_dir: /app # 设置工作目录为 /app
+    stdin_open: true
+    tty: true
