@@ -1,6 +1,10 @@
 # 使用官方的 Ubuntu 镜像作为基础镜像
 FROM debian:latest
 
+
+# 运行时挂载 .ssh 目录
+VOLUME ["/root/.ssh"]
+
 # 安装必要的软件包
 RUN apt-get update && apt-get install -y \
   git \
@@ -12,11 +16,13 @@ RUN apt-get update && apt-get install -y \
   htop
 
 # 设置默认 shell 为 zsh
-SHELL ["/bin/zsh", "-c"]
+
+# SHELL ["/bin/zsh", "-c"]
+RUN chsh -s /bin/zsh root
 
 # 安装 nvm
 ENV NVM_DIR /root/.nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
 # 安装 Node.js 并设置默认版本
 RUN bash -c "source $NVM_DIR/nvm.sh && \
@@ -47,17 +53,22 @@ RUN bash -c "source $NVM_DIR/nvm.sh && \
 # 设置工作目录
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json 到工作目录
-COPY package*.json ./
+
+# COPY package*.json ./
 
 # 安装项目依赖
-RUN bash -c "source $NVM_DIR/nvm.sh && pnpm install"
+# RUN bash -c "source $NVM_DIR/nvm.sh"
 
 # 复制项目文件到工作目录
-COPY . .
+# COPY . .
+
+
 
 # 暴露端口
-EXPOSE 3000
+# EXPOSE 3000
 
 # 启动应用
-CMD ["zsh", "-c", "source $NVM_DIR/nvm.sh && pnpm install && pnpm start"]
+# CMD ["zsh", "-c", "source $NVM_DIR/nvm.sh && pnpm install && pnpm start"]
+
+# 保持容器运行
+CMD ["tail", "-f", "/dev/null"]
